@@ -7,6 +7,9 @@ export class Ship{
 
     hit(){
         this.timesHit++;
+
+        if (this.timesHit === this.length) 
+            this.sunk();
     }
 
     sunk(){
