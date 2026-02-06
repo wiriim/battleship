@@ -11,6 +11,12 @@
     grid-template-columns: 1fr 1fr;
 }
 
+#player-turn{
+    position: fixed;
+    top: 10px;
+    left: 10px;
+}
+
 .player1-container{
     background-color: rgba(255, 0, 0, .2);
     display: flex;
@@ -41,4 +47,10 @@
     display: flex;
     flex-wrap: wrap;
     align-items: start; 
+}
+
+.player1-tile:hover,
+.player2-tile:hover{
+    background-color: rgba(0, 255, 0, .2);
+    cursor: pointer;
 }

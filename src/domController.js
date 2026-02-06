@@ -1,10 +1,9 @@
 import { Ship } from "./ship";
 import { includes } from "./main";
 
-function initPlayerGameboard(player1, player2){
+function initPlayerGameboard(player1){
     const p1Board = document.querySelector('.player1-gameboard');
     const p2Board = document.querySelector('.player2-gameboard');
-    console.log(p1Board.clientWidth);
 
     for (let i = 0; i < 10; i++){
         for (let j = 0; j < 10; j++){
@@ -24,7 +23,7 @@ function initPlayerGameboard(player1, player2){
             player1.gameboard.board[i][j] instanceof Ship ? tile.style.background = "rgba(0, 255, 0, .2)" : "none";
             p1Board.appendChild(tile);
 
-            player2.gameboard.board[i][j] instanceof Ship ? tile2.style.background = "rgba(0, 255, 0, .2)" : "none";
+            // player2.gameboard.board[i][j] instanceof Ship ? tile2.style.background = "rgba(0, 255, 0, .2)" : "none";
             p2Board.appendChild(tile2);
         }
     }
