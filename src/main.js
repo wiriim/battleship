@@ -26,16 +26,84 @@ function initPlayerShip(player1, player2){
     player1.gameboard.placeShip(new Ship([[5,0], [6,0], [7,0]]));
     player1.gameboard.placeShip(new Ship([[4,4], [4,5], [4,6], [4,7]]));
     
-    player2.gameboard.placeShip(new Ship([[1,0]]));
-    player2.gameboard.placeShip(new Ship([[3,0]]));
-    player2.gameboard.placeShip(new Ship([[4,9]]));
-    player2.gameboard.placeShip(new Ship([[8,9]]));
-    player2.gameboard.placeShip(new Ship([[1,7], [2,7]]));
-    player2.gameboard.placeShip(new Ship([[1,9], [2,9]]));
-    player2.gameboard.placeShip(new Ship([[8,3], [8,4]]));
-    player2.gameboard.placeShip(new Ship([[2,2], [3,2], [4,2]]));
-    player2.gameboard.placeShip(new Ship([[5,0], [6,0], [7,0]]));
-    player2.gameboard.placeShip(new Ship([[4,4], [4,5], [4,6], [4,7]]));
+    let randCoor1;
+    let randCoor2;
+    for (let i = 0; i < 1; i++){
+        do {
+            randCoor1 = Math.floor(Math.random() * 10);
+            randCoor2 = Math.floor(Math.random() * 10);
+        } while (randCoor2+1 >= player2.gameboard.length || randCoor2+2 >= player2.gameboard.length || randCoor2+3 >= player2.gameboard.length 
+            || !isValidPlacement(player2, [[randCoor1, randCoor2], [randCoor1, randCoor2+1], [randCoor1, randCoor2+2], [randCoor1, randCoor2+3]])
+        );
+        player2.gameboard.placeShip(new Ship([[randCoor1, randCoor2], [randCoor1, randCoor2+1], [randCoor1, randCoor2+2], [randCoor1, randCoor2+3]]));
+    }
+
+    for (let i = 0; i < 2; i++){
+        do {
+            randCoor1 = Math.floor(Math.random() * 10);
+            randCoor2 = Math.floor(Math.random() * 10);
+        } while (randCoor2+1 >= player2.gameboard.length || randCoor2+2 >= player2.gameboard.length 
+            || !isValidPlacement(player2, [[randCoor1, randCoor2], [randCoor1, randCoor2+1], [randCoor1, randCoor2+2]])
+        );
+        player2.gameboard.placeShip(new Ship([[randCoor1, randCoor2], [randCoor1, randCoor2+1], [randCoor1, randCoor2+2]]));
+    }
+
+    for (let i = 0; i < 3; i++){
+        do {
+            randCoor1 = Math.floor(Math.random() * 10);
+            randCoor2 = Math.floor(Math.random() * 10);
+        } while (randCoor2+1 >= player2.gameboard.length
+            || !isValidPlacement(player2, [[randCoor1, randCoor2], [randCoor1, randCoor2+1]])
+        );
+        player2.gameboard.placeShip(new Ship([[randCoor1, randCoor2], [randCoor1, randCoor2+1]]));
+    }
+
+    for (let i = 0; i < 4; i++){
+        do {
+            randCoor1 = Math.floor(Math.random() * 10);
+            randCoor2 = Math.floor(Math.random() * 10);
+        } while (!isValidPlacement(player2, [[randCoor1, randCoor2]]));
+        player2.gameboard.placeShip(new Ship([[randCoor1, randCoor2]]));
+    }
+}
+
+function isValidPlacement(player, arr){
+    // 0,-1
+    // -1,-1 
+    // +1,-1
+    // +1,0
+    // -1,0
+    // 0,+1
+    // +1,+1
+    // -1,+1 
+    const gameboard = player.gameboard;
+    const board = player.gameboard.board;
+    for (let coor of arr){
+        const coor1 = coor[0];
+        const coor2 = coor[1];
+        if (isInstanceOfShip(board[coor1][coor2])) return false;
+        if (gameboard.isInboundLength(coor2-1) && !includes(arr, board[coor1][coor2-1]) && isInstanceOfShip(board[coor1][coor2-1]))
+            return false;
+        if (gameboard.isInboundHeight(coor1-1) && gameboard.isInboundLength(coor2-1) && !includes(arr, board[coor1-1][coor2-1]) && isInstanceOfShip(board[coor1-1][coor2-1]))
+            return false;
+        if (gameboard.isInboundHeight(coor1+1) && gameboard.isInboundLength(coor2-1) && !includes(arr, board[coor1+1][coor2-1]) && isInstanceOfShip(board[coor1+1][coor2-1]))
+            return false;
+        if (gameboard.isInboundHeight(coor1+1) && !includes(arr, board[coor1+1][coor2]) && isInstanceOfShip(board[coor1+1][coor2]))
+            return false;
+        if (gameboard.isInboundHeight(coor1-1) && !includes(arr, board[coor1-1][coor2]) && isInstanceOfShip(board[coor1-1][coor2]))
+            return false;
+        if (gameboard.isInboundLength(coor2+1) && !includes(arr, board[coor1][coor2+1]) && isInstanceOfShip(board[coor1][coor2+1]))
+            return false;
+        if (gameboard.isInboundHeight(coor1+1) && gameboard.isInboundLength(coor2+1) && !includes(arr, board[coor1+1][coor2+1]) && isInstanceOfShip(board[coor1+1][coor2+1]))
+            return false;
+        if (gameboard.isInboundHeight(coor1-1) && gameboard.isInboundLength(coor2+1) && !includes(arr, board[coor1-1][coor2+1]) && isInstanceOfShip(board[coor1-1][coor2+1]))
+            return false;
+    }
+    return true;
+}
+
+function isInstanceOfShip(coor){
+    return coor instanceof Ship;
 }
 
 function addTileListener(player1, player2){
@@ -113,6 +181,7 @@ function updatePlayerTurn(selectedIndex){
 }
 
 export function includes(arr, coor){
+    
     for(let e of arr){
         if (e.every((x, i) => x == coor[i])) return true;
     }

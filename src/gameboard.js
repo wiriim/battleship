@@ -70,14 +70,14 @@ export class Gameboard{
     }
 
     isInboundHeight(coor){
-        if (coor >= 0 && coor <= this.height){
+        if (coor >= 0 && coor < this.height){
             return true;
         }
         return false;
     }
 
     isInboundLength(coor){
-        if (coor >= 0 && coor <= this.length){
+        if (coor >= 0 && coor < this.length){
             return true;
         }
         return false;

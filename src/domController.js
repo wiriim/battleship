@@ -1,7 +1,7 @@
 import { Ship } from "./ship";
 import { includes } from "./main";
 
-function initPlayerGameboard(player1){
+function initPlayerGameboard(player1, player2){
     const p1Board = document.querySelector('.player1-gameboard');
     const p2Board = document.querySelector('.player2-gameboard');
 
