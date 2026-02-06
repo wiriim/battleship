@@ -29,28 +29,29 @@ test('Ship at 0,2 & 0,3 has been hit once', () => {
     expect(board[0][2].timesHit).toBe(1);
 });
 
+test('Gameboard is attacked once', () => {
+    expect(gameboard.attacked.length).toBe(1);
+});
+
 test('Ship at 0,2 & 0,3 has been sunk', () => {
     gameboard.receiveAttack(0,3);
     expect(board[0][3].isSunk).toBe(true);
-});
-
-test('Gameboard is attacked twice', () => {
-    expect(gameboard.attacked.length).toBe(2);
 });
 
 test('Gameboard is game over', () => {
     expect(gameboard.gameOver).toBe(true);
 });
 
-// test('Surrounding ship tiles in gameboard marked as hit', () => {
-//     function includes(arr, coor){
-//         for(let e of arr){
-//             if (e.every((x, i) => x == coor[i])) return true;
-//         }
-//         return false;
-//     }
-//     expect(includes(gameboard.attacked, [0,1])).toBe(true);
-//     expect(includes(gameboard.attacked, [1,2])).toBe(true);
-//     expect(includes(gameboard.attacked, [1,3])).toBe(true);
-//     expect(includes(gameboard.attacked, [0,4])).toBe(true);
-// });
+test('Surrounding ship tiles in gameboard marked as hit', () => {
+    function includes(arr, coor){
+        for(let e of arr){
+            if (e.every((x, i) => x == coor[i])) return true;
+        }
+        return false;
+    }
+
+    expect(includes(gameboard.attacked, [0,1])).toBe(true);
+    expect(includes(gameboard.attacked, [1,2])).toBe(true);
+    expect(includes(gameboard.attacked, [1,3])).toBe(true);
+    expect(includes(gameboard.attacked, [0,4])).toBe(true);
+});

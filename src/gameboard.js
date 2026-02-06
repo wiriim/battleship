@@ -23,6 +23,26 @@ export class Gameboard{
 
             if (receiver.isSunk){
                 //Add hit to all surrounding ship tiles
+                for (let coor of receiver.coor){
+                    let coor1 = coor[0];
+                    let coor2 = coor[1];
+                    if (this.isInboundHeight(coor1-1) 
+                        && !(this.board[coor1-1][coor2] instanceof Ship)) this.attacked.push([coor1-1,coor2]);
+                    
+                    if (this.isInboundHeight(coor1+1)
+                        && !(this.board[coor1+1][coor2] instanceof Ship)) this.attacked.push([coor1+1,coor2]);
+                    
+                    if (this.isInboundLength(coor2-1)
+                        && !(this.board[coor1][coor2-1] instanceof Ship)) this.attacked.push([coor1,coor2-1]);
+                    
+                    if (this.isInboundLength(coor2+1)
+                        && !(this.board[coor1][coor2+1] instanceof Ship)) this.attacked.push([coor1,coor2+1]);
+                    
+                    if (this.isInboundHeight(coor1-1) && this.isInboundLength(coor2-1)) this.attacked.push([coor1-1,coor2-1]);
+                    if (this.isInboundHeight(coor1-1) && this.isInboundLength(coor2+1)) this.attacked.push([coor1-1,coor2+1]);
+                    if (this.isInboundHeight(coor1+1) && this.isInboundLength(coor2-1)) this.attacked.push([coor1+1,coor2-1]);
+                    if (this.isInboundHeight(coor1+1) && this.isInboundLength(coor2+1)) this.attacked.push([coor1+1,coor2+1]);
+                }
             }
             this.checkGameOver();
         }
@@ -47,5 +67,19 @@ export class Gameboard{
             }
         }
         return this.gameOver = true;
+    }
+
+    isInboundHeight(coor){
+        if (coor >= 0 && coor <= this.height){
+            return true;
+        }
+        return false;
+    }
+
+    isInboundLength(coor){
+        if (coor >= 0 && coor <= this.length){
+            return true;
+        }
+        return false;
     }
 }
