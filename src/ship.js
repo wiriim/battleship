@@ -1,8 +1,9 @@
 export class Ship{
-    constructor(length, timesHit = 0, isSunk = false){
-        this.length = length;
-        this.timesHit = timesHit;
-        this.isSunk = isSunk;
+    timesHit = 0;
+    isSunk = false;
+    constructor(coor){
+        this.length = coor.length;
+        this.coor = coor;
     }
 
     hit(){

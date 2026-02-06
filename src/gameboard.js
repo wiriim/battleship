@@ -3,15 +3,15 @@ import { Ship } from "./ship";
 export class Gameboard{
     attacked = [];
     gameOver = false;
-    constructor(length, height){
+    length = 10;
+    height = 10;
+    constructor(){
         this.board = [];
-        this.length = length;
-        this.height = height;
         this.initBoard();
     }
 
-    placeShip(arr, ship){
-        for (let coor of arr){
+    placeShip(ship){
+        for (let coor of ship.coor){
             this.board[coor[0]][coor[1]] = ship;
         }
     }

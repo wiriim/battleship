@@ -2,7 +2,7 @@ import { Gameboard } from './gameboard';
 import { Ship } from './ship';
 import { expect, test } from '@jest/globals';
 
-const gameboard = new Gameboard(10, 10);
+const gameboard = new Gameboard();
 const board = gameboard.board;
 
 test('Board length is 10', () => {
@@ -13,8 +13,8 @@ test('Board height is 10', () => {
     expect(gameboard.height).toBe(10);
 });
 
-const ship = new Ship(2);
-gameboard.placeShip([[0, 2], [0,3]], ship);
+const ship = new Ship([[0, 2], [0,3]]);
+gameboard.placeShip(ship);
 
 test('Board at 0,2 has ship placed', () => {
     expect(board[0][2]).toBe(ship);

@@ -1,7 +1,7 @@
 import { Ship } from "./ship";
 import { expect, test } from '@jest/globals';
 
-const ship = new Ship(2);
+const ship = new Ship([[1,2], [1,3]]);
 
 test('Ship is 2 blocks long', () => {
     expect(ship.length).toBe(2);
