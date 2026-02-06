@@ -2,13 +2,14 @@ import "./style.css";
 import { Gameboard } from "./gameboard";
 import { Ship } from "./ship";
 import { Player } from "./player";
-import { initPlayerGameboard } from "./domController";
+import { initPlayerGameboard, updatePlayer1Gameboard, updatePlayer2Gameboard } from "./domController";
 
 document.addEventListener('DOMContentLoaded', () => {
     const player1 = new Player(new Gameboard());
     const player2 = new Player(new Gameboard());
     initPlayerShip(player1, player2);
     initPlayerGameboard(player1, player2);
+    addTileListener(player1, player2);
 });
 
 function initPlayerShip(player1, player2){
@@ -34,4 +35,52 @@ function initPlayerShip(player1, player2){
     player2.gameboard.placeShip(new Ship([[2,2], [3,2], [4,2]]));
     player2.gameboard.placeShip(new Ship([[5,0], [6,0], [7,0]]));
     player2.gameboard.placeShip(new Ship([[4,4], [4,5], [4,6], [4,7]]));
+}
+
+function addTileListener(player1, player2){
+    const player1Gameboard = player1.gameboard;
+    const player1Tile = document.querySelectorAll('.player1-tile');
+    for (let tile of player1Tile){
+        tile.addEventListener('click', (e) => {
+            const coor1 = e.target.dataset.coor1;
+            const coor2 = e.target.dataset.coor2;
+            if (!includes(player1Gameboard.attacked, [coor1, coor2])){
+                console.log('HIT');
+                player1Gameboard.receiveAttack(coor1, coor2);
+                updatePlayer1Gameboard(player1);
+
+                if (player1Gameboard.gameOver) console.log('P2 WIN');
+            }
+            else{
+                console.log('ALREADY HIT');
+            }
+        });
+    }
+
+    const player2Gameboard = player2.gameboard;
+    const player2Tile = document.querySelectorAll('.player2-tile');
+    for (let tile of player2Tile){
+        tile.addEventListener('click', (e) => {
+            const coor1 = e.target.dataset.coor1;
+            const coor2 = e.target.dataset.coor2;
+            if (!includes(player2Gameboard.attacked, [coor1, coor2])){
+                console.log('HIT');
+                player2Gameboard.receiveAttack(coor1, coor2);
+                updatePlayer2Gameboard(player2);
+
+                if (player2Gameboard.gameOver) console.log('P1 WIN');
+            }
+            else{
+                console.log('ALREADY HIT');
+            }
+        });
+    }
+    
+}
+
+export function includes(arr, coor){
+    for(let e of arr){
+        if (e.every((x, i) => x == coor[i])) return true;
+    }
+    return false;
 }

@@ -63,7 +63,7 @@ export class Gameboard{
     checkGameOver(){
         for (let i = 0; i < this.height; i++){
             for (let j = 0; j < this.length; j++){
-                if (this.board[i][j] instanceof Ship && !this.board[i][j].isSunk) return false;
+                if (this.board[i][j] instanceof Ship && !this.board[i][j].isSunk) return this.gameOver = false;
             }
         }
         return this.gameOver = true;
