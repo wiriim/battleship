@@ -102,10 +102,6 @@ function isValidPlacement(player, arr){
     return true;
 }
 
-function isInstanceOfShip(coor){
-    return coor instanceof Ship;
-}
-
 function addTileListener(player1, player2){
     const player1Gameboard = player1.gameboard;
     const player1Tile = document.querySelectorAll('.player1-tile');
@@ -117,7 +113,9 @@ function addTileListener(player1, player2){
                 if (!includes(player1Gameboard.attacked, [coor1, coor2])){
                     player1Gameboard.receiveAttack(coor1, coor2);
                     updatePlayer1Gameboard(player1);
-                    updatePlayerTurn(0);
+
+                    if (!isInstanceOfShip(player1Gameboard.board[coor1][coor2]))
+                        updatePlayerTurn(0);
     
                     if (player1Gameboard.gameOver) alert('P2 WIN');
                 }
@@ -138,7 +136,9 @@ function addTileListener(player1, player2){
                 if (!includes(player2Gameboard.attacked, [coor1, coor2])){
                     player2Gameboard.receiveAttack(coor1, coor2);
                     updatePlayer2Gameboard(player2);
-                    updatePlayerTurn(1);
+
+                    if (!isInstanceOfShip(player2Gameboard.board[coor1][coor2]))
+                        updatePlayerTurn(1);
     
                     if (player2Gameboard.gameOver) alert('P1 WIN');
                 }
@@ -157,19 +157,23 @@ function addComputerListener(player1){
     const player2Tile = document.querySelectorAll('.player2-tile');
     for (let tile of player2Tile){
         tile.addEventListener('click', () => {
+            let randCoor1;
+            let randCoor2;
             if (select.selectedIndex == 1){
-                let randCoor1;
-                let randCoor2;
                 do {
-                    randCoor1 = Math.floor(Math.random() * 10);
-                    randCoor2 = Math.floor(Math.random() * 10);
-                } while (includes(player1Gameboard.attacked, [randCoor1, randCoor2]));
-                
-                player1Gameboard.receiveAttack(randCoor1, randCoor2);
-                updatePlayer1Gameboard(player1);
-                updatePlayerTurn(0);
-
-                if (player1Gameboard.gameOver) alert('P2 WIN');
+                    do {
+                        randCoor1 = Math.floor(Math.random() * 10);
+                        randCoor2 = Math.floor(Math.random() * 10);
+                    } while (includes(player1Gameboard.attacked, [randCoor1, randCoor2]));
+                    
+                    player1Gameboard.receiveAttack(randCoor1, randCoor2);
+                    updatePlayer1Gameboard(player1);
+    
+                    if (!isInstanceOfShip(player1Gameboard.board[randCoor1][randCoor2]))
+                        updatePlayerTurn(0);
+    
+                    if (player1Gameboard.gameOver) alert('P2 WIN');
+                } while (isInstanceOfShip(player1Gameboard.board[randCoor1][randCoor2]));
             }
         });
     }
@@ -178,6 +182,11 @@ function addComputerListener(player1){
 function updatePlayerTurn(selectedIndex){
     const select = document.querySelector('#player-turn');
     select.selectedIndex = selectedIndex;
+}
+
+
+function isInstanceOfShip(coor){
+    return coor instanceof Ship;
 }
 
 export function includes(arr, coor){

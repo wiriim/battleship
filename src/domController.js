@@ -23,7 +23,7 @@ function initPlayerGameboard(player1, player2){
             player1.gameboard.board[i][j] instanceof Ship ? tile.style.background = "rgba(0, 255, 0, .2)" : "none";
             p1Board.appendChild(tile);
 
-            // player2.gameboard.board[i][j] instanceof Ship ? tile2.style.background = "rgba(0, 255, 0, .2)" : "none";
+            player2.gameboard.board[i][j] instanceof Ship ? tile2.style.background = "rgba(0, 255, 0, .2)" : "none";
             p2Board.appendChild(tile2);
         }
     }
