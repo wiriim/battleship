@@ -2,7 +2,7 @@ import "./style.css";
 import { Gameboard } from "./gameboard";
 import { Ship } from "./ship";
 import { Player } from "./player";
-import { initPlayerGameboard, updatePlayer1Gameboard, updatePlayer2Gameboard } from "./domController";
+import { initPlayerGameboard, updatePlayer1Gameboard, updatePlayer2Gameboard, updateShipTiles } from "./domController";
 
 document.addEventListener('DOMContentLoaded', () => {
     const player1 = new Player(new Gameboard());
@@ -11,6 +11,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initPlayerGameboard(player1, player2);
     addTileListener(player1, player2);
     addComputerListener(player1);
+    addDragAndDropListener(player1);
 });
 
 function initPlayerShip(player1, player2){
@@ -184,6 +185,36 @@ function updatePlayerTurn(selectedIndex){
     select.selectedIndex = selectedIndex;
 }
 
+function addDragAndDropListener(player){
+    const player1Tile = document.querySelectorAll('.player1-tile');
+    const playerBoard = player.gameboard.board;
+    let coor1, coor2;
+    let swapCoor1, swapCoor2;
+    for (let tile of player1Tile){
+        tile.addEventListener('drag', (e) => {
+            coor1 = parseInt(e.target.dataset.coor1);
+            coor2 = parseInt(e.target.dataset.coor2);
+        });
+        tile.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            swapCoor1 = parseInt(e.target.dataset.coor1);
+            swapCoor2 = parseInt(e.target.dataset.coor2);
+        });
+        tile.addEventListener('drop', (e) => {
+            e.preventDefault();
+            let temp = playerBoard[coor1][coor2];
+            playerBoard[coor1][coor2] = 'o';
+            if (isValidPlacement(player, [[swapCoor1, swapCoor2]])){
+                [playerBoard[coor1][coor2], playerBoard[swapCoor1][swapCoor2]] = [playerBoard[swapCoor1][swapCoor2], playerBoard[coor1][coor2]];
+                updateShipTiles(coor1, coor2, swapCoor1, swapCoor2);
+            }
+            else{
+                playerBoard[coor1][coor2] = temp;
+                alert('Not valid placement');
+            }
+        });
+    }
+}
 
 function isInstanceOfShip(coor){
     return coor instanceof Ship;

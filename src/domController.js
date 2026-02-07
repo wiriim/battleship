@@ -16,6 +16,7 @@ function initPlayerGameboard(player1, player2){
             tile.dataset.coor1 = i;
             tile.dataset.coor2 = j;
             tile.textContent = `${i}, ${j}`;
+            tile.draggable = true;
 
             const tile2 = tile.cloneNode(true);
             tile2.classList.replace('player1-tile', 'player2-tile');
@@ -23,7 +24,7 @@ function initPlayerGameboard(player1, player2){
             player1.gameboard.board[i][j] instanceof Ship ? tile.style.background = "rgba(0, 255, 0, .2)" : "none";
             p1Board.appendChild(tile);
 
-            player2.gameboard.board[i][j] instanceof Ship ? tile2.style.background = "rgba(0, 255, 0, .2)" : "none";
+            // player2.gameboard.board[i][j] instanceof Ship ? tile2.style.background = "rgba(0, 255, 0, .2)" : "none";
             p2Board.appendChild(tile2);
         }
     }
@@ -50,4 +51,12 @@ function updatePlayer2Gameboard(player){
     }
 }
 
-export { initPlayerGameboard, updatePlayer1Gameboard, updatePlayer2Gameboard }
+function updateShipTiles(coor1, coor2, swapCoor1, swapCoor2){
+    const tile = document.querySelector(`.player1-tile[data-coor1="${coor1}"][data-coor2="${coor2}"]`);
+    const swapTile = document.querySelector(`.player1-tile[data-coor1="${swapCoor1}"][data-coor2="${swapCoor2}"]`);
+
+    tile.style.background = 'none';
+    swapTile.style.background = 'rgba(0, 255, 0, .2)';
+}
+
+export { initPlayerGameboard, updatePlayer1Gameboard, updatePlayer2Gameboard, updateShipTiles }
